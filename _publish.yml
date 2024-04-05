@@ -1,0 +1,4 @@
+- source: project
+  quarto-pub:
+    - id: c363fe10-2ccf-4a14-9d2d-8a26446fed4b
+      url: 'https://wcarcamo.quarto.pub/yet-another-wiki'
