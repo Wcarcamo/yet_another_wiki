@@ -1,0 +1,6 @@
+---
+title: "Home"
+date-modified: last-modified
+---
+
+Welcome to my personal wiki. 

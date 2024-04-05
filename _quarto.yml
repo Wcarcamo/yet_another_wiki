@@ -1,0 +1,36 @@
+project:
+  type: website
+
+website:
+  title: "Yet Another Wiki"
+  back-to-top-navigation: true
+  repo-url: https://github.com/Wcarcamo/yet_another_wiki
+  repo-actions: [edit, issue]
+  navbar:
+    # left:
+    #   - href: index.qmd
+    #     text: Home
+    right:
+      - icon: github
+        href: https://github.com/wcarcamo
+        aria-label: GitHub
+
+  sidebar:
+    style: "docked"
+    contents:
+      - index.qmd
+      - linux.qmd
+      - section: "Homelab"
+        contents: 
+          - homelab/proxmox.qmd
+          - homelab/docker.qmd
+          - homelab/services.qmd
+      - networking.qmd
+
+format:
+  html:
+    theme: 
+      light: cosmo
+      dark: darkly
+    css: styles.css
+    toc: true

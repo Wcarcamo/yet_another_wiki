@@ -1,0 +1,38 @@
+---
+title: Linux
+date-modified: last-modified
+---
+
+# Arch
+
+## Package Management
+
+Full Upgrade:
+
+```{.sh}
+$ pacman -Syu
+```
+
+Install a package:
+
+```{.sh}
+pacman -S {package}
+```
+
+Remove package:
+
+```{.sh}
+$ pacman -R {package}
+```
+
+Remove package and dependencies:
+
+```{.sh}
+$ pacman -Rns {package}
+```
+
+List AUR packages:
+
+```{.sh}
+$ pacman -Qm
+```

@@ -1,0 +1,18 @@
+---
+title: "Proxmox"
+date-modified: last-modified
+---
+
+# Installation
+
+## Default User
+
+`root`
+
+# Update Static IP
+
+Curtesy of [Servethehome](https://www.servethehome.com/how-to-change-primary-proxmox-ve-ip-address/).
+
+1. `$ nano /etc/network/interfaces`
+2. `$ nano /etc/hosts`
+3. Reboot
