@@ -76,6 +76,12 @@ $ docker compose up -d
 $ docker compose down
 ```
 
+## System Prune
+
+```{.sh}
+$ docker system prune
+```
+
 # Networking
 
 ## Disconnect
