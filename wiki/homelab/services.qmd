@@ -1,0 +1,225 @@
+---
+title: "Services"
+date-modified: last-modified
+format: 
+  html:
+    fig-align: left
+---
+
+Below are the services I am self-hosting, reasons why I've chosen them, and random notes I have on them. 
+
+A couple of notes:
+
+1. I use [docker](./docker.qmd) to deploy my containers
+2. I like applications that can follow Infrastructure as Code (IaC):
+    - I use docker compose to manage
+    - I lean for applications that I can follow this principle
+
+# Pi-Hole
+
+![](https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/pi-hole.png){height="48"}
+
+[pihole/pihole](https://hub.docker.com/r/pihole/pihole)
+
+### Why
+
+1. Provide network wide protection against ads on all my local devices
+2. Have a local DNS server that points my subdomains to my self-hosted services
+
+### Notes
+
+#### Docker Password Update
+
+When I tried to set the environment variable `WEBPASSWORD_FILE` in the docker compose, the password was still randomly generated password.
+Steps for manualy updating it after initial deployment.
+
+1. Spin a shell within the container
+    - Run `docker ps` for the container id
+2. Change the pihole password within the container
+    - This can't be changed through the webui
+
+```{.sh}
+$ docker exec -it <container id> sh
+> $ sudo pihole -a -p
+> $ exit
+```
+
+# Filebrowser
+
+![](https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/filebrowser.png){height="48"}
+
+[filebrowser/filebrowser](https://hub.docker.com/r/filebrowser/filebrowser)
+
+### Why?
+
+I have a dedicated lxc container running in my [proxmox](./proxmox.qmd) server that hosts my NAS samba share. 
+
+I wanted to give my wife access using an application that provides a similar experience to Google Drive & Dropbox.
+The other option was [Nextcloud](https://hub.docker.com/_/nextcloud) but I found it overkill for what I needed.
+
+### Notes
+
+Filebrowser is fantastic and the only feature I would like to see added is PDF Support. 
+Currently I have to download the PDF files to preview them. 
+
+# Mealie
+
+![](https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/mealie.png){height="48"}
+
+[hkotel/mealie](https://hub.docker.com/r/hkotel/mealie)
+
+### Why?
+
+I wanted to start centralizing all the recipes I've collected over years. 
+Some are recipes my mom has passed down, some from books I've bought, and others from random websites.
+
+# FreshRSS
+
+![](https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/freshrss.png){height="48"}
+
+[freshrss/freshrss](https://hub.docker.com/r/linuxserver/freshrss)
+
+### Why?
+
+I'd never used an RSS feed before deploying FreshRSS.
+I didn't even know what an RSS feed was beforehand.
+
+The only reason I spun up the container was to practice deploying my first application with docker.
+Once it was up and running, I started using it.
+Now I use it everyday to stay up to date with a few different blogs and tech news sites.
+
+# Gitea
+
+![](https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/gitea.png){height="48"}
+
+[gitea/gitea](https://hub.docker.com/r/gitea/gitea)
+
+### Why?
+
+I have some development projects that I don't want hosted on other platforms (i.e. github).
+Nothing wrong with github.
+Gitea just let's me have my own private git server and store these projects locally.
+
+# Dockge
+
+![](https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/dockge.png){height="48"}
+
+[louislam/dockge](https://hub.docker.com/r/louislam/dockge)
+
+### Why?
+
+I prefer using docker compose for all my containers. 
+Dockge let's me quickly review which containers are running, their compose file, and logs.
+
+### Notes
+
+I don't use Dockge to **manage** my docker containers. 
+I only use it to **monitor** them.
+
+Dockge allows you to edit docker compose files but I prefer using [codeserver](#codeserver) for these tasks instead.
+
+# Portainer
+
+![](https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/portainer.png){height="48"}
+
+[portainer/portainer-ce](https://hub.docker.com/r/portainer/portainer-ce)
+
+### Why?
+
+I use portainer for exploring different containers. 
+I have NovaSpirit's [pi-hosted template](https://github.com/pi-hosted/pi-hosted) loaded and I search to see what popular containers are out there.
+
+If there is something that catches my attention I'll use portainer to spin up an instance for testing.
+
+### Notes
+
+I do not use Portainer to manage my containers either.
+I believe in infrastructure as code. 
+Portainer is just easier to explore and test new containers in a testing environment.
+
+# Wireguard
+
+![](https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/wireguard.png){height="48"}
+
+[weejewel/we-easy](https://hub.docker.com/r/weejewel/wg-easy)
+
+### Why?
+
+I use Wireguard to create a VPN connection back into my local network when I'm away from home.
+This lets me access all my services that are not exposed to the internet.
+
+With the help of this docker container, it's relatively easy to set up and add my various clients. 
+
+# Traefik
+
+![](https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/traefik.png){height="48"}
+
+[traefik](https://hub.docker.com/_/traefik)
+
+### Why?
+
+I needed a reverse proxy for my services and subdomains.
+Traefik lets me keep my configuration as infrastructure as code by using labels within my docker compose files.
+
+### Notes
+
+I chose Traefik over Caddy because I was able to find more resources on setting up Traefik over Caddy.
+
+I have 2 issues with Traefik that makes me want to try Caddy.
+
+1. Trying to remember which labels are required for different containers
+2. Understanding which containers require different labels due to different limitations
+
+Due to this I find myself often looking through all my compose files to see what works for new containers.
+For now I don't have many containers so it's not the biggest issue, but I can see this become more annoying as I have my compose files. 
+
+I would rather have 1 single configuration file storing all my routes.
+
+# Nginx
+
+![](https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/nginx.png){height="48"}
+
+[linuxserver/nginx](https://hub.docker.com/r/linuxserver/nginx)
+
+### Why?
+
+I have a simple site that I host internally. 
+I wanted a minimal web server that is tried and tested.  
+
+# Homer
+
+![](https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/homer.png){height="48"}
+
+[b4bz/homer](https://hub.docker.com/r/b4bz/homer)
+
+### Why?
+
+I use it to launch my various services without having to remember all my subdomains.
+
+There are 2 reasons for choosing Homer over other dashboards.
+
+First, it is a static dashboard.
+This allows it to quickly load when I need it.
+I've tried other dashboard and had to wait for assets to load.
+I visit my dashboard often throughout the day and overtime I've felt the difference.
+
+The second benefit is that the dashboard is configured with `yaml` files. 
+This allows my dashboard to follow infrastrucutre as code principles. 
+
+### Notes
+
+A lot of users in the homelab/self-hosted space appear to like [Homepage](https://gethomepage.dev/latest/). 
+I might give it a try to compare with Homer soon.
+
+# Code-server
+
+![](https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/png/code-server.png){height="48"}
+
+[linuxserver/code-server](https://hub.docker.com/r/linuxserver/code-server)
+
+### Why?
+
+I run codeerver directly on my Docker machines. 
+
+Running codeserver lets me manage and edit my docker compose files on my system without having to SSH or using TUI text editors like nano.
+Code-server makes it convenient to open my compose files and quickly apply changes. 

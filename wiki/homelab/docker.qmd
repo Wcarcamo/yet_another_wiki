@@ -3,15 +3,25 @@ title: "Docker"
 date-modified: last-modified
 ---
 
+Docker is a containerization platform. 
+I use it run a host of applications. 
+
 # Installation
 
 ## Development
 
 Curtesy of Novaspirit's [Pi-Hosted Series](https://github.com/pi-hosted/pi-hosted/blob/master/install_docker.sh).
 
-I have a raspberry pi 4 that I use for dev purposes.
+Setting up docker in a development environment:
 
-If you want to quickly test docker in a development environment:
+:::{.callout-warning}
+I only do this on a raspberry pi 4b that I use for testing.
+
+Always read the script first. 
+Using `curl` to pipe a shell script is always looked down upon.
+Especially when using `sudo`.
+:::
+
 
 ```{.sh}
 $ sudo curl -sSL https://get.docker.com | sh || error "Failed to install Docker."
@@ -55,13 +65,23 @@ $ sudo usermod -aG docker $USER
 
 # Commands
 
-## Start Daemon
+## System 
+
+### Start Daemon
 
 ```{.sh}
 $ systemctl start docker
 ```
 
-## Start Compose
+### Prune
+
+```{.sh}
+$ docker system prune
+```
+
+## Compose
+
+### Start
 
 ```{.sh}
 $ docker compose up
@@ -70,21 +90,15 @@ $ docker compose up
 $ docker compose up -d
 ```
 
-## Stop Compose
+### Stop
 
 ```{.sh}
 $ docker compose down
 ```
 
-## System Prune
+## Networking
 
-```{.sh}
-$ docker system prune
-```
-
-# Networking
-
-## Disconnect
+### Disconnect
 
 ```{.sh}
 $ docker network disconnect {network} {container}

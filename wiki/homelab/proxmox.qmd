@@ -1,0 +1,239 @@
+---
+title: "Proxmox"
+date-modified: last-modified
+---
+
+# Installation
+
+[Download](https://www.proxmox.com/en/downloads/proxmox-virtual-environment) and install ISO.
+
+# Post-Installation
+
+## Default User
+
+Use `root` to log into proxmox for the first time.
+
+## Update Static IP
+
+Curtesy of [Servethehome](https://www.servethehome.com/how-to-change-primary-proxmox-ve-ip-address/).
+
+In case I need to change my proxmox's static IP, I prefer updating the proxmox config files over using the GUI.  
+
+```{.sh}
+# Interfaces
+nano /etc/network/interfaces
+
+# Hosts
+nano /etc/hosts`
+
+reboot
+```
+
+## LXC
+
+### Users
+
+LXC containers are spun with only root users.
+[Add new users](../linux.qmd#add-system-users).
+
+# Proxmox Nodes
+
+I have 2 machines that I've installed proxmox on:
+
+:::{.callout-note}
+I don't care much about listing exact parts. 
+I'm using this to get familiar with proxmox and what I can do. 
+This should give you rough idea of what I'm running.
+:::
+
+| Machine | Component | Part |
+|---------|-----------|------|
+| Dell Optiplex 7050 SFF | cpu     | i7-7700 |
+|                        | memory  | 48 GB |
+|                        | storage | 128 GB - m.2 SSD |
+|                        | storage | 500 GB - 2.5 in. SSD |
+|                        | Storage | 2.0 TB - 2.5 in. harddrive |
+| Dell Optiplex 3060 SFF | cpu     | i5-8500T |
+|                        | memory  | 32 GB |
+|                        | storage | 128 GB - m.2 SSD |
+|                        | storage | 256 GB - 2.5 in. SSD |
+
+I got them cheap off of craigslist.
+I am currently only using the 7050. 
+Eventually I'll use the 3060 for a 24/7 low power proxmox node and have the 7050 on only while I'm awake.  
+
+# Virtual Machines
+
+I do not run any VMs at the moment. 
+I prefer using linux containers (LXC).
+
+# LXC
+
+I currently run 2 LXCs:
+
+1. [NAS + Docker](#nas--docker)
+2. [Pi-Hole](#pi-hole)
+
+Both are running Ubuntu 23.10 for their OS [^1].
+
+[^1]: I began using proxmox at the start of 2024. 
+Ubuntu's 24.04 LTS had not been released yet. 
+I'll migrate soon.
+
+## NAS + Docker
+
+My first LXC container is both a:
+
+1. NAS (network attached storage)
+2. Docker Host
+
+:::{.callout-note}
+My goal is to split these up into their own dedicated LXC containers.
+
+When I started, my first attempt didn't work out. 
+I'd previously use other solutions like [openmediavault](https://www.openmediavault.org/) to set up my nas but I wanted to challenge myself by manually setting up [samba shares](#nas).
+
+I was able to get something running but it's not ideal.
+I plan to redo it one day. 
+
+At the same time, I wanted migrate all my services off my older docker host (a raspberry pi 4). 
+Instead of trying figure everything out until it was "perfect", I decided to install docker so I could first migrate my services.
+
+I figured I could always create extra LXC containers later to get more familiar with configuring samba now that I'm running proxmox.
+:::
+
+### NAS
+
+I use [samba](https://www.samba.org/) as the back-end for my nas.
+
+Below are the steps I take to configure my samba server.
+
+1. Install samba
+
+```{.sh}
+sudo apt install samba
+```
+
+2. [Add System Users](#add-users)
+3. Add SMB users
+
+:::{.callout-caution}
+SMB handles it's own authentication which is why you should create system users first before creating SMB users.
+:::
+
+```{.sh}
+sudo smbpasswd -a username
+```
+
+4. Add SMB users to the samba group
+
+:::{.callout-note}
+Group `sambashare` is created when you install samba.
+:::
+
+```{.sh}
+sudo usermod -a -G sambashare username
+```
+
+5. Create a samba share
+
+:::{.callout-tip}
+Below we create the share within a dedicated users home directory for demonstration purposes.
+
+Instead I recommend mounting one or more storage drives to store all of your data.
+:::
+
+```{.sh}
+mkdir /home/username/share
+```
+
+6. Set up permissions for the share
+
+:::{.callout-caution}
+I don't fully understand what the leading 2 is for the `chmod` command. 
+Based on quick reseach it might mean that all files created under this directory should inherit the same group id.
+So if user 1 or user 2 creates a new file or directory under this share, these new files will continue to be owned by the group `sambashare`.
+
+770 means both the user & group members can all read, write, and execute the files within this share. 
+Everyone else should not any permissions to access these files.
+:::
+
+```{.sh filename="share"}
+sudo chown username:sambashare /home/username/share/
+sudo chmod 2770 /home/username/share/
+```
+
+7. Edit `smb.conf`
+
+:::{.callout-note}
+See the `samba` man pages for full documentation on what you can configure in this file.
+
+You could also review the contents of my samba config file from my self-hosted git repo, which I'll eventually link to. 
+:::
+
+8. Restart `smb` service
+
+```{.sh}
+sudo nano /etc/samba/smb.conf
+sudo service smbd restart
+```
+
+9. OPTIONAL: Depending on your set up you might need to allow samba traffic through your machine's firewall
+
+```{.sh}
+sudo ufw allow samba
+```
+
+#### mergerfs
+
+I learned about [mergerfs](https://github.com/trapexit/mergerfs) by listening to the [self-hosted podcast](https://selfhosted.show/).
+
+I want to use mergerfs alongisde samba in my LXC container to mix and match drives as my NAS storage needs grow.
+
+One of the host runs [perfectmediaserver.com](https://perfectmediaserver.com/03-installation/manual-install-ubuntu/#mergerf) that provides more information about the `mergerfs` project, what it does, and how to set it up.
+
+```{.sh filename="Shell - Installation"}
+# Update based on Ubuntu OS and version number
+$ wget https://github.com/trapexit/mergerfs/releases/download/2.40.2/mergerfs_2.40.2.ubuntu-mantic_amd64.deb
+$ sudo dpkg -i mergerfs_2.40.2.ubuntu-mantic_amd64.deb
+``` 
+
+After I installed and configured mergerfs, I ran into an issue with `fuse` by testing the set up before deploying my changes.
+
+```{.sh}
+# Test fstab, after configuring mergerfs
+mount -a
+
+# Fuse was not found, Checked with
+modprobe fuse
+
+# Install fuse package, couldn't install
+apt install fuse
+```
+
+After doing some research, I've learned you can pass `fuse` into the container using the proxmox GUI into the container.
+
+Since I still need to redo samba server, I have not tested this out. 
+
+### Docker
+
+Go to the [Docker](./docker.qmd) page for more info. 
+
+## Pi-Hole
+
+My second LXC is a dedicated Pi-hole instance. 
+
+I use Pi-hole for
+
+1. Local DNS
+2. Network Wide Ad-Blocking
+
+This is the second Pi-Hole instance on my network.
+I do this for redundancy in case my primary Pi-Hole goes down.
+My primary Pi-Hole instance is deployed on a raspberry pi 4b within a docker container. 
+
+I used Pi-hole's official [one-step automated install](https://github.com/pi-hole/pi-hole/?tab=readme-ov-file#one-step-automated-install) to set it up.
+
+```{.sh}
+curl -sSL https://install.pi-hole.net | bash
+```

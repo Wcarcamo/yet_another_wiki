@@ -1,0 +1,101 @@
+---
+title: Linux
+date-modified: last-modified
+---
+
+# Arch
+
+I run Arch as my daily driver on my laptop.
+This section will contain general notes about my experience.
+
+## Package Management
+
+Full Upgrade:
+
+```{.sh}
+$ pacman -Syu
+```
+
+Install a package:
+
+```{.sh}
+pacman -S {package}
+```
+
+Remove package:
+
+```{.sh}
+$ pacman -R {package}
+```
+
+Remove package and dependencies:
+
+```{.sh}
+$ pacman -Rns {package}
+```
+
+List AUR packages:
+
+```{.sh}
+$ pacman -Qm
+```
+
+## Root Directory Out of Space
+
+One day my root directory was suddenly full. 
+I have 20GB allocated for my root partition.
+
+This prevented me from being able to update my system.
+
+First, I ran the following to clear up some of my pacman package cache.
+
+```{.sh}
+$ paccache -r
+```
+
+This only removed 1.62 GiB worth of data.
+
+I then ran the following to remove an additional 4 GiB:
+
+```{.sh}
+$ sudo pacman -Sc
+```
+
+I also use docker to test out different applications.
+Images often take up a lot of space so I also used [docker system prune](./homelab/docker.qmd#system-prune) to make more space. 
+This gave me another 1.5 GB back. 
+
+# General 
+
+This section contains general linux notes.
+
+## Add System Users
+
+These commands are run when you only have a `root` user account on any linux system. 
+This might happen on fresh installations of various operating systems.
+
+It's a good idea to create a separate account that does not have root privileges by default.
+Instead, add the user to the `sudo` group to allow it to run higher privilege commands when they are needed.
+
+```{.sh filename="Shell"}
+# Add User
+adduser username
+
+# Add User to sudo group
+usermod -a -G sudo username
+```
+
+:::{.callout-note}
+`adduser` is a wrapper for `useradd`. 
+:::
+
+## Nano
+
+### Select All & Delete
+
+How to delete everything from a file using Nano:
+
+1. Position cursor at line 1, column 1.
+1. Start Mark: <kbd>Control</kbd> + <kbd>6</kbd>
+1. Mark to End: <kbd>Alt</kbd> + <kbd>/</kbd>
+1. Delete Line (Marked lines): <kbd>Control</kbd> + <kbd>K</kbd>

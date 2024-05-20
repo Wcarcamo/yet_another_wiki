@@ -3,4 +3,9 @@ title: "Home"
 date-modified: last-modified
 ---
 
-Welcome to my personal wiki. 
+Welcome to yet another wiki and blog.
+
+Names inspired by the [historical](https://yaml.org/spec/history/2001-08-01.html) YAML acronym, "Yet Another Markup Language".
+As I write this, I've learned YAML now stands for "YAML Ain't Markup Language".
+
+However, I'm keeping the names as is.
