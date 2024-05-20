@@ -1,0 +1,122 @@
+---
+title: "Welcome"
+description: "Site Launch"
+author: "Will"
+date: "2022-05-19"
+categories: [roadmap, homelab]
+---
+
+Welcome to the (yet another) blog section of my site.
+I plan to use this space to write about what I'm working on or plan to work on.
+
+Right now I'm mostly interested in documenting my experience building out a homelab. 
+I've hit a point where I have learned a lot over the past few months and I need to start keeping track of what I am doing and why.
+The wiki pages will have more technical resources for anyone looking to replicate any of my infrastructure. 
+This blog will be more about the journey.
+
+# First Pi and Self-Hosted Service
+
+I unintentionally started my homelab journey near the end of 2019 but it wasn't until about a year go that I've been getting more serious about it. 
+
+What started it all was watching a [Linus Tech Tips](https://www.youtube.com/watch?v=KBXTnrD_Zs4) video about running [Pi-hole](https://pi-hole.net/) on a raspberry pi zero w. 
+I thought the projected sounded cool so I bought a pi zero and began running my first service. 
+It was cheap, fun to set up, and got me curious to learn more about Linux.
+
+# First Woes
+
+A few months later, I was curious about what else I could do with a pi.
+I stumbled upon the [NextCloudPi](https://github.com/nextcloud/nextcloudpi) project and bought a pi 4b. 
+I got lucky because this was before the covid-19 pandemic and the chip shortage.
+
+I got NextCloudPi running and for a few months I was very happy with it. 
+I started using it to store most of my personal files so I could access them either on my laptop or phone. 
+
+Overtime, maintenance & security started creeping in my head. 
+I tried to update my NextCloud instance but something happened and my service went down. 
+At the time I didn't understand where the files were actually being stored so I got scared I had just lost my data (I also was not even thinking about back-up either). 
+I was using a 2 TB external hard drive but I didn't understand the file paths. 
+Eventually I was able to recover my data but I remember the panic that set in trying to get it back.
+
+My NextCloud was also exposed to the internet. 
+I had set up login credentials but I really didn't do anything else. 
+I also had to open ports on my router to access my NextCloud away from home, which in hindsight I really didn't understand what I was doing here either. 
+
+Eventually I pulled the plug on NextCloud and replaced it with [Openmediavault (OMV)](https://www.openmediavault.org/). 
+Compared to Nextcloud, OMV was a leaner product and easier to work with.
+I figured out how to set up a smb share and built my first network attached storage (NAS). 
+
+I can't say I understood much of what I was doing with OMV either but I was able to address my 2 biggest concerns:
+
+1. Having a back-up strategy (for upgrades)
+2. Not being exposed to the internet
+
+After these experiences, my OMW was more set it and forget it. 
+
+# Homelab Community
+
+For the next 2 years I stopped tinkering with my Pi's. 
+The chip shortage and scalpers made it harder to buy another Pi and I didn't want to risk breaking my current deployments.
+
+Instead I focused my attention on learning more about linux for the desktop. 
+Then around the end of 2022 I stumbled upon **Novaspirit Tech** on youtube and his [Pi-Hosted playlist](https://www.youtube.com/playlist?list=PL846hFPMqg3jwkxcScD1xw2bKXrJVvarc).
+
+I got introduced to [Docker](https://docker.com) and saw the opportunity to be able to run more services on my pi without needing to buy another one. 
+I could start tinkering once again.
+
+I committed to decommissioning OMV and I followed Novaspirt's [guide](https://pi-hosted.com/) for setting up portainer on my Pi 4.
+With portainer and Novaspirit's container template set up, I was able to start testing different docker containers.
+I felt like a world of possibilities just opened up.
+
+Throughout 2023, I kept looking for more self-hosted content and found more content creators.
+A few creators I want to mentioned are:
+
+- Novaspirit Tech
+    - Pi-Hosted: Introduced me a more formal world of self-hosting on a Pi
+    - Introduced me to low powered x86 servers compared to the the Pi's ARM architecture 
+    - Introduced me to the world of proxmox
+- [RaidOwl](https://www.youtube.com/@RaidOwl)
+    - Got me thinking more about home networking
+    - Bought Omada networking gear
+- [TechnoTim](https://www.youtube.com/@TechnoTim)
+    - Got me thinking about Infrastructure as Code
+    - Helped me set up Traefik for my reverse proxy
+- [Hardware Haven](https://www.youtube.com/@HardwareHaven)
+    - Got me thinking about putting life back into older hardware
+    - Bought dell optiplex's for running proxmox
+- [Jeff Geerling](https://www.youtube.com/@JeffGeerling)
+    - Got me thinking about Ansible
+
+# What's Next
+
+I currently wrapping up 2 goals:
+
+1. Migrating from services from my Pi 4 (ARM) to using x86 machines
+2. Set up my homelab with infrastructure as code in mind
+
+For the first goal, I now have older dell optiplexes with proxmox installed. 
+I've been using LXC containers to redeploy my docker containers. 
+
+For the second, I've moved away from using Portainer to using [Docker Compose](https://docs.docker.com/compose/).
+
+My current set up is not perfect. 
+There is still a lot that I want to redesign in my existing infrastructure.
+But for now it is working and I'm happy with the progress I've made.
+
+My next goals are:
+
+1. Fine tune my infrastructure as code practice
+    - It has been time consuming setting everything setting up for the first time with Docker Compose compared to Portainer, but it has been worth it
+    - I feel like I'm understanding the technology stack better and it will help reproduce my builds faster and faster now that I have the code
+    - Learn how to use [Ansible](https://www.ansible.com/) 
+2. Set up proper networking
+    - I have omada equipment but I need to devote time for setting up proper vlan networks to segment my lan
+3. Explore more docker containers
+    - I have yet to play with media streaming applications like Plex or Jellyfin
+    - I want to incorporate a SSO authentication portal for the rest of my docker services, maybe Authentik or Authelia? 
+    - I need a way to monitor my services for disrutions, uptime kuma or healthchecks? 
+4. Follow 3-2-1 backup strategy
+    - 3 copies, over 2 mediums, and 1 offsite location
+    - My current backup strategy is keeping a backup copy of my homelab data on my laptop 
+    - I don't have a lot of data so this has been working fine, but this can definitely be improved
+
+If all this sounds interesting, I hope you come back to read about updates on my homelab progress.
