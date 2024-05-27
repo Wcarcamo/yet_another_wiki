@@ -3,9 +3,13 @@ title: "Home"
 date-modified: last-modified
 ---
 
-Welcome to yet another wiki and blog.
+Welcome to **Yet Another Wiki** and [Yet Another Blog](./blog.qmd).
 
 Names inspired by the [historical](https://yaml.org/spec/history/2001-08-01.html) YAML acronym, "Yet Another Markup Language".
 As I write this, I've learned YAML now stands for "YAML Ain't Markup Language".
 
 However, I'm keeping the names as is.
+
+The wiki is for technical documentation of my work.
+
+The blog is for informal writings about tech I'm interested in. 
