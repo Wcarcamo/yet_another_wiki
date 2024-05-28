@@ -20,7 +20,9 @@ website:
       style: "docked"
       contents:
         - index.qmd
-        - wiki/linux.qmd
+        - section: wiki/linux.qmd
+          contents:
+            - wiki/linux/ssh.qmd
         - section: "Homelab"
           contents: 
             - wiki/homelab/proxmox.qmd

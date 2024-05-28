@@ -1,0 +1,84 @@
+---
+title: SSH
+date-modified: last-modified
+---
+
+# Overview
+
+[SSH](https://www.digitalocean.com/community/tutorials/ssh-essentials-working-with-ssh-servers-clients-and-keys) is a protocol to connect to a remote system. 
+Once a connection is made, you can execute commands to manage the remote system.
+
+The local computer is also referred to as the **client**, the remote system as the **host**.
+
+It is recommended to use keys to authenticate connections between the client and the host. 
+There are 2 keys:
+
+| Key | File | Example |
+|-|-|-|
+| Private | `*` | id_rsa |
+| Public | `*.pub` | id_rsa.pub |
+
+The client [generates](#key-generation) both of the keys.
+The public key is copied onto the host and stored under the home directory of a user account at `~/.ssh/authorized_keys`.
+
+:::{.callout-important}
+The private key is never be shared!
+:::
+
+Once configured, you can run `ssh account@host` on the client to connect to the host, where _account_ is a username account on the host and _host_ is an ip address or FQDN.
+
+```{mermaid}
+sequenceDiagram
+    participant client as Client:<br>Laptop
+    participant remote  as Remote:<br>Server
+    client->>remote: ssh account@host
+    Note over remote: account:~/.ssh/authorized_keys
+    par SSH Established
+        client->>remote: $ <commands>
+        client->>remote: $ exit
+        remote->>client: Connection Closed
+    end
+```
+
+# Generating Keys
+
+```{.sh}
+ssh-keygen
+```
+
+# Disable Password Authentication
+
+If you have a working key-based authentication set up, it is recommended to disable password authentication on the remote host system.
+
+```{.sh}
+sudo nano /etc/ssh/sshd_config
+```
+
+Search for `PasswordAuthentication` and set it to `no`. 
+Uncomment if necessary.
+
+```{.sh filename="sshd_config"}
+PasswordAuthentication no
+```
+
+Restart the ssh daemon.
+
+```{.sh}
+sudo service ssh restart
+```
+
+# Client Side Configuration
+
+## Aliases
+
+Instead of running `ssh demo@192.168.1.1` to connect to a remote system, you can create alias.
+
+Edit/Create the config file at `./.ssh/config`:
+
+```{.sh filename="./.ssh/config"}
+Host test
+    HostName 192.168.1.1
+    User demo
+```
+
+Now you can type `ssh test` to establish the SSH connection.
