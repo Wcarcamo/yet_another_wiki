@@ -1,0 +1,45 @@
+---
+title: Ansible
+date-modified: last-modified
+---
+
+# Installation
+
+1. Create an Ansible Project
+
+```{.sh}
+mkdir test_ansible && cd test_ansible
+```
+
+2. Create a [Python Virtual Environment](../programming/python.qmd#virtual-environments)
+3. Install Ansible with `pip`
+
+```{.sh}
+$ python3 -m pip install ansible
+```
+
+# Commands
+
+## CLI
+
+Run a playbook with an inventory file
+
+```{.sh}
+ansible proxmox -m ping -i inventory
+```
+
+## Playbooks
+
+Run playbook `playbook.yaml` with inventory `inventory.yaml`:
+
+```{.sh}
+ansible-playbook playbook.yaml -i inventory.yaml
+```
+
+# Configuration
+
+Get default config file and store in the working directory of an ansible project:
+
+```{.sh}
+ansible-config init --disabled -t all > ansible.cfg
+```
