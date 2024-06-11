@@ -28,7 +28,11 @@ website:
             - wiki/homelab/proxmox.qmd
             - wiki/homelab/docker.qmd
             - wiki/homelab/services.qmd
+            - wiki/homelab/ansible.qmd
             - wiki/homelab/networking.qmd
+        - section: "Programming"
+          contents:
+            - wiki/programming/python.qmd
 
 format:
   html:
