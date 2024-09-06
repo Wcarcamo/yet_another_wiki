@@ -1,0 +1,22 @@
+---
+title: Git
+date-modified: last-modified
+---
+
+# Github
+
+## Troubleshoot SSH
+
+One of my machines does not keep my ssh authentication running.
+Below are some commands I use to check that the `ssh-agent` is running and using the right key to authenticate with my github repositories. 
+
+```{.sh filename="Shell"}
+# Check if ssh key appears 
+ssh-add -l -E sha256
+
+# Start the ssh-agent in the background, if not already running
+eval "$(ssh-agent -s)"
+
+# Reload ssh key, include file if using different naming convention than `id_rsa`
+ssh-add ~/.ssh/my_key
+```

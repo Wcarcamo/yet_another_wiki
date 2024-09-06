@@ -32,6 +32,7 @@ website:
             - wiki/homelab/networking.qmd
         - section: "Programming"
           contents:
+            - wiki/programming/git.qmd
             - wiki/programming/python.qmd
 
 format:

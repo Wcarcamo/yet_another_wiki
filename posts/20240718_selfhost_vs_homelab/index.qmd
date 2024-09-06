@@ -1,0 +1,69 @@
+---
+title: "Self-Host? Homelab? Both?"
+description: "What is this site about?"
+date: 09/05/2024
+categories: [roadmap, discourse]
+---
+
+# Background
+
+I saw some people talking on [discord](https://discord.com/) about using the word **self-hosting** to describe their hobby over **homelab**.
+
+In the online spaces I follow, I do see these words used interchangeably but they hold different meanings.
+I want to describe what I want to accomplish with this site and how it relates to both of these words.
+
+That being said, I'm not trying to cause division between those that relate more to one over the other.
+Often times people do end up doing a little bit of both for whatever goals they have. 
+
+# Self-Host
+
+I see self-hosting as someone who cares about owning and taking back control of their own data.
+For "hosting", I refer to having your own computer that:
+
+1. Stores your data 
+2. Runs applications that you choose to interact with your data
+
+The data and applications you host can then be made available to only yourself or your family and friends as well. 
+
+There are various reasons one might come to taking on this responsibility.
+One person might care about self-hosting to make sure they never lose access to their data.
+Another might self-host because they don't trust big corporations with what are doing with user data.
+
+For others, taking on this responsibility is worth the time spent learning different technologies and managing everything.
+Self-hosting is very opinionated and there are various ways to set up and maintain your infrastructure. 
+You also run the risk of losing precious data.
+
+I find self-hosting rewarding. 
+I think we live in a time where self-hosting has become a viable option for many people.
+I am not promising that self-hosting is **easy**, but it is approachable for those willing to put some effort.
+There are lots of resources and advances in the technology that I think people will be surprised at what they can accomplish themselves. 
+
+In the [wiki](/wiki/homelab/services.qmd) section of this site, I have information about the applications that I choose to self-host. 
+I am still experimenting with different types of applications so expect a couple of changes over time. 
+If you are interested in exploring different applications that are available to self-host, I recommend checking out [selfh.st](https://selfh.st/apps/).
+
+# Homelab
+
+Homelab on the other hand takes self-hosting a step further. 
+You still care about hosting your own data and applications but with a homelab you start to care about building out your own I.T infrastructure for testing and development.
+
+For example, with a homelab you might be curious about tinkering with different hardware, figuring out what they can do, and understanding their limits.
+On the software side, you might also be interested in virtualizing your computers or testing trending software.
+Another important aspect to homelabs is learning about networking and security. 
+As your homelab grows you'll accumilate more devices and will want to make sure your devices are communicating with each other (if they are meant to be). 
+
+There are many different topics to explore within a homelab which is another reason for building out this site.
+The [wiki](/index.qmd) is the place where I'll be documenting what I find to be important and helpful as it relates to homelabs.
+
+# Takeaway
+
+Whether you care about self-hosting, homelabs, or both, this site is for you.
+However, the content will skew toward homelabs.
+
+I want to learn as much as I can about everything without a goal in mind.
+Along the way I'll share what I learn.
+
+Some weeks might focus on the self-hosted applications I'm testing.
+Other times I will focus on what I can automate in my infrastructure.
+
+In the end, I hope to just look back and enjoy the progress I've made. 
