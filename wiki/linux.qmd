@@ -61,9 +61,30 @@ I then ran the following to remove an additional 4 GiB:
 $ sudo pacman -Sc
 ```
 
-I also use docker to test out different applications.
-Images often take up a lot of space so I also used [docker system prune](./homelab/docker.qmd#system-prune) to make more space. 
+I was also experimenting with docker to test out different applications.
+Docker images were taking up a lot of space so I had to use [docker system prune](./homelab/docker.qmd#system-prune) to make more space. 
 This gave me another 1.5 GB back. 
+
+Later I discovered that I could [configure the docker daemon data directory](./homelab/docker.qmd#config) away from the default root partition. 
+I recommend this change if you don't want to run `[system, image] prune` all the time. 
+
+If you want a report for which directories under root have built up, I found the following command useful from this [post](https://askubuntu.com/questions/266825/what-do-i-do-when-my-root-filesystem-is-full).
+
+On my system I found `/var` and `/usr` to be taking up the most space.
+
+```{.sh}
+# Searching through root
+sudo du -hsx /* | sort -rh | head -n 40
+# Examine usr and var directories
+sudo du -hsx /usr/* | sort -rh | head -n 40
+sudo du -hsx /var/* | sort -rh | head -n 40
+```
+
+Bonus: Clean old journals and logs, courtesy of [rabcor](https://forum.endeavouros.com/t/my-100-gb-root-partition-filled-up-is-there-a-way-to-avoiding-wiping-my-home-when-reinstalling/63448/15).
+
+```{.sh}
+sudo journalctl --flush --vacuum-files=5
+```
 
 # General 
 
